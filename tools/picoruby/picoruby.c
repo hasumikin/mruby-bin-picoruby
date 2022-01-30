@@ -44,7 +44,11 @@ int handle_opt(int argc, char * const *argv, char **oneliner)
     switch (opt) {
       case 'v':
         DEBUGP("v add: %p\n", optarg);
-        fprintf(stdout, "PicoRuby %s\n", PICORBC_VERSION);
+        fprintf(stdout, "PicoRuby %s", PICORBC_VERSION);
+        #ifdef PICORBC_DEBUG
+          fprintf(stdout, " (debug build)");
+        #endif
+        fprintf(stdout, "\n");
         return -1;
       case 'e':
         *oneliner = optarg;
