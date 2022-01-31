@@ -25,7 +25,9 @@ MRuby::Gem::Specification.new 'mruby-bin-picoruby' do |spec|
 
   file mrubyc_dir => build.gem_clone_dir do
     FileUtils.cd build.gem_clone_dir do
-      sh "git clone -b mrubyc3 https://github.com/mrubyc/mrubyc.git"
+      unless Dir.exists? mrubyc_dir
+        sh "git clone -b mrubyc3 https://github.com/mrubyc/mrubyc.git"
+      end
     end
   end
 
