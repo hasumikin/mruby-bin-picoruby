@@ -1,11 +1,8 @@
 MRuby::Gem::Specification.new 'mruby-bin-picoruby' do |spec|
   spec.license = 'MIT'
-  spec.author  = 'mruby developers'
+  spec.author  = 'HASUMI Hitoshi'
   spec.summary = 'picoruby executable'
   spec.add_dependency 'mruby-pico-compiler', github: 'hasumikin/mruby-pico-compiler'
-  spec.add_dependency 'mruby-bin-picorbc', github: 'hasumikin/mruby-bin-picorbc'
-
-  spec.cc.include_paths << "#{build.gems['mruby-pico-compiler'].build_dir}/include"
 
   mrubyc_dir = "#{build.gem_clone_dir}/mrubyc"
   spec.cc.include_paths << "#{mrubyc_dir}/src"
@@ -52,13 +49,16 @@ MRuby::Gem::Specification.new 'mruby-bin-picoruby' do |spec|
     end
   end
 
+  pico_compiler_srcs = %w(common compiler dump generator mrbgem my_regex
+                          node regex scope stream token tokenizer)
+  pico_compiler_objs = pico_compiler_srcs.map do |name|
+    objfile("#{build.gems['mruby-pico-compiler'].build_dir}/src/#{name}")
+  end
+
   exec = exefile("#{build.build_dir}/bin/picoruby")
 
-  file exec => mrubyc_objs + [mrblib_obj, picoruby_obj] do |f|
-    pico_compiler_objs = Dir.glob("#{build.gems['mruby-pico-compiler'].build_dir}/src/*.o").reject { |o|
-                           o.end_with?("parse.o")
-                         }
-    build.linker.run f.name, f.prerequisites + pico_compiler_objs
+  file exec => mrubyc_objs + pico_compiler_objs + [mrblib_obj, picoruby_obj] do |f|
+    build.linker.run f.name, f.prerequisites
   end
 
   build.bins << 'picoruby'
