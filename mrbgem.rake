@@ -5,7 +5,7 @@ MRuby::Gem::Specification.new 'mruby-bin-picoruby' do |spec|
   spec.add_dependency 'mruby-pico-compiler', github: 'hasumikin/mruby-pico-compiler'
   spec.add_dependency 'mruby-mrubyc', github: 'hasumikin/mruby-mrubyc'
 
-  spec.cc.include_paths << "#{build.gems['mruby-mrubyc'].clone.dir}/repos/mrubyc/src"
+  spec.cc.include_paths << "#{build.gems['mruby-mrubyc'].dir}/repos/mrubyc/src"
 
   picoruby_src = "#{dir}/tools/picoruby/picoruby.c"
   picoruby_obj = objfile(picoruby_src.pathmap("#{build_dir}/tools/picoruby/%n"))
