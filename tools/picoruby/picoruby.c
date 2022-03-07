@@ -101,13 +101,13 @@ int main(int argc, char *argv[])
   StreamInterface *si;
 
   if (oneliner != NULL) {
-    si = StreamInterface_new(oneliner, STREAM_TYPE_MEMORY);
+    si = StreamInterface_new(NULL, oneliner, STREAM_TYPE_MEMORY);
   } else {
     if ( !argv[optind] ) {
       ERRORP("picoruby: no program file given");
       return 1;
     }
-    si = StreamInterface_new(argv[optind], STREAM_TYPE_FILE);
+    si = StreamInterface_new(NULL, argv[optind], STREAM_TYPE_FILE);
     if (si == NULL) return 1;
   }
   ParserState *p = Compiler_parseInitState(si->node_box_size);
