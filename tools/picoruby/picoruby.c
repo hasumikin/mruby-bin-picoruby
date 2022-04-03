@@ -99,6 +99,7 @@ int main(int argc, char *argv[])
   if (ret != 0) return ret;
 
   StreamInterface *si;
+  FILE *fp = NULL;
 
   if (oneliner != NULL) {
     si = StreamInterface_new(NULL, oneliner, STREAM_TYPE_MEMORY);
@@ -107,7 +108,7 @@ int main(int argc, char *argv[])
       ERRORP("picoruby: no program file given");
       return 1;
     }
-    FILE *fp = fopen(argv[optind], "rb");
+    fp = fopen(argv[optind], "rb");
     if (!fp) {
       FATALP("picoruby: failed to open file");
       return 1;
@@ -123,6 +124,7 @@ int main(int argc, char *argv[])
     ret = 1;
   }
 
+  if (fp) fclose(fp);
   StreamInterface_free(si);
   Compiler_parserStateFree(p);
 #ifdef PICORUBY_DEBUG
