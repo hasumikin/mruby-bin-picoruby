@@ -12,21 +12,8 @@ int loglevel;
 
 void run(uint8_t *mrb)
 {
-  struct VM *vm = mrbc_vm_open(NULL);
-  if( vm == 0 ) {
-    fprintf(stderr, "Error: Can't open VM.\n");
-    return;
-  }
-
-  if( mrbc_load_mrb(vm, mrb) != 0 ) {
-    fprintf(stderr, "Error: Illegal bytecode.\n");
-    return;
-  }
-
-  mrbc_vm_begin(vm);
-  mrbc_vm_run(vm);
-  mrbc_vm_end(vm);
-  mrbc_vm_close(vm);
+  mrbc_create_task(mrb, 0);
+  mrbc_run();
 }
 
 static bool verbose = false;
