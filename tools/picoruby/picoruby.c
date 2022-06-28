@@ -12,8 +12,9 @@ int loglevel;
 
 void run(uint8_t *mrb)
 {
-  mrbc_create_task(mrb, 0);
+  mrbc_tcb *tcb = mrbc_create_task(mrb, 0);
   mrbc_run();
+  mrbc_raw_free(tcb);
 }
 
 static bool verbose = false;
